@@ -23,14 +23,14 @@ var bundler;
 // Rebuilds the main "d3plus.js" file.
 var rebundle = function(){
 
-  bundler.transform(babelify).bundle()
+  return bundler.bundle()
     .on("error", notify.onError(error))  // Notifies if any error exists.
-    .pipe(source("d3plus.js"))           // Defines the output filename.
+    .pipe(source("d3plus.dev.js"))       // Defines the output filename.
     .pipe(gulp.dest("./"))               // Defines the output path.
     .pipe(timer("Build time"))           // Outputs build time to development shell.
     .pipe(notify({
       "title": "D3plus",
-      "message": "New build compiled.",
+      "message": "New build compiled",
       "icon": path.join(__dirname, "/../icon.png")
     }))                                  // Creates an OS notification.
     .pipe(connect.reload());             // Reloads the live-connect server.
@@ -38,23 +38,30 @@ var rebundle = function(){
 };
 
 // Creates the main bundler object.
-bundler = watchify(browserify(watchify.args)) // Initializes watchify
+bundler = watchify(browserify(watchify.args)) // Initializes watchify.
   .add("./src/init.js")                       // Defines the static root file for building.
+  .transform(babelify)                        // Compiles all ES6 code to ES5.
   .on("update", rebundle);                    // When any required file is changed, rebundle the build.
 
-// Created the main "dev" gulp task that initiates a rebundle and watches the
-// test directory for .html updates.
-var testDir = "./test/**/*.*";
+// Created the main "dev" gulp task that watches the test directory for updates.
 gulp.task("dev", function(){
 
   // Initiates a new development bundle of the library.
   rebundle();
 
-  // Reloads the live-connect server when any HTML file in the /test/ directory
+  // Reloads the live-connect server when any file in the /test/ directory
   // has changed.
-  gulp.watch([testDir], function(){
+  gulp.watch(["./test/*.*", "./test/**/*.*"], function(file){
 
-    gulp.src(testDir).pipe(connect.reload());
+    var fileName = path.relative("./", file.path);
+
+    return gulp.src(file.path)
+      .pipe(notify({
+        "title": "D3plus",
+        "message": fileName + " updated",
+        "icon": path.join(__dirname, "/../icon.png")
+      }))                                  // Creates an OS notification.
+      .pipe(connect.reload());             // Reloads the live-connect server.
 
   });
 

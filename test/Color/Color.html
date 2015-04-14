@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<script src="../../d3plus.dev.js"></script>
+
+<body>
+  <!-- Body elements should go here. -->
+</body>
+
+<script>
+
+  // Javascript code should go here
+  var arr = ["Alpha", "Beta", true, false, undefined, null, 45, 78, "#cc0000", "cornflowerblue", "rgba(255,120,34,0.5)", "hsl(200, 50%, thing)", "black"];
+  arr.forEach(function(a){
+    var c = new d3plus.Color(a);
+    console.log(a, c.hex)
+  })
+
+</script>
