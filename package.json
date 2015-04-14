@@ -4,8 +4,10 @@
   "description": "Data visualization made easy. A javascript library that extends the popular D3.js to enable fast and beautiful visualizations.",
   "main": "d3plus.js",
   "devDependencies": {
+    "babel-eslint": "^2.0.2",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
+    "eslint": "^0.19.0",
     "gulp": "^3.8.11",
     "gulp-chmod": "^1.2.0",
     "gulp-connect": "^2.2.0",
@@ -53,7 +55,9 @@
     "email": "landry.dave@gmail.com"
   },
   "homepage": "http://www.d3plus.org",
-  "dependencies": {},
+  "dependencies": {
+    "d3": "^3.5.5"
+  },
   "filename": "d3plus.min.js",
   "npmName": "d3plus",
   "npmFileMap": [
@@ -67,12 +71,16 @@
       ]
     }
   ],
+  "scripts": {
+    "test": "eslint src/*"
+  },
   "eslintConfig": {
     "env": {
       "browser": true,
       "es6": true,
       "node": true
     },
+    "parser": "babel-eslint",
     "rules": {
       "strict": 0
     }
