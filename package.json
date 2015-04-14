@@ -16,6 +16,8 @@
     "gulp-notify": "^2.2.0",
     "gulp-rimraf": "^0.1.1",
     "gulp-yuidoc": "^0.1.2",
+    "mocha": "^2.2.4",
+    "mocha-traceur": "^2.1.0",
     "path": "^0.11.14",
     "require-dir": "^0.3.0",
     "vinyl-source-stream": "^1.1.0",
@@ -72,12 +74,13 @@
     }
   ],
   "scripts": {
-    "test": "eslint src/*"
+    "test": "eslint src/* && mocha --compilers js:mocha-traceur test/mocha"
   },
   "eslintConfig": {
     "env": {
       "browser": true,
       "es6": true,
+      "mocha": true,
       "node": true
     },
     "parser": "babel-eslint",

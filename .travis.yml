@@ -1,7 +1,16 @@
----
 language: node_js
+
 node_js:
+  - "0.12"
+  - "0.11"
   - "0.10"
+
 branches:
   only:
     - "2.0"
+
+# before_script:
+#   - "export DISPLAY=:4000"         # Sets the server port to 4000.
+#   - "sh -e /etc/init.d/xvfb start" # Starts the xvfb process.
+#   - sleep 5                        # Gives xvfb some time to start.
+#   - rackup
