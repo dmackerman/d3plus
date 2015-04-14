@@ -9,19 +9,22 @@ var babelify = require("babelify"),
     timer = require("gulp-duration"),
     watchify = require("watchify");
 
-// Initiate the live-connect server from the root directory. This is used
-// primarily to serve the .html test files in the /test/ directory.
-connect.server({
-  "livereload": true,
-  "port": 4000,
-  "root": path.resolve("./")
-});
+// Created the main "dev" gulp task that watches the test directory for updates.
+gulp.task("dev", function(){
 
-// Declares the main bundler object.
-var bundler;
+  // Initiate the live-connect server from the root directory. This is used
+  // primarily to serve the .html test files in the /test/ directory.
+  connect.server({
+    "livereload": true,
+    "port": 4000,
+    "root": path.resolve("./")
+  });
 
-// Rebuilds the main "d3plus.js" file.
-var rebundle = function(){
+  // Declares the main bundler object.
+  var bundler;
+
+  // Rebuilds the main "d3plus.js" file.
+  var rebundle = function(){
 
   return bundler.bundle()
     .on("error", notify.onError(error))  // Notifies if any error exists.
@@ -35,16 +38,13 @@ var rebundle = function(){
     }))                                  // Creates an OS notification.
     .pipe(connect.reload());             // Reloads the live-connect server.
 
-};
+  };
 
-// Creates the main bundler object.
-bundler = watchify(browserify(watchify.args)) // Initializes watchify.
+  // Creates the main bundler object.
+  bundler = watchify(browserify(watchify.args)) // Initializes watchify.
   .add("./src/init.js")                       // Defines the static root file for building.
   .transform(babelify)                        // Compiles all ES6 code to ES5.
   .on("update", rebundle);                    // When any required file is changed, rebundle the build.
-
-// Created the main "dev" gulp task that watches the test directory for updates.
-gulp.task("dev", function(){
 
   // Initiates a new development bundle of the library.
   rebundle();
