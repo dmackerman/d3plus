@@ -74,7 +74,7 @@
     }
   ],
   "scripts": {
-    "test": "eslint src/* && mocha --compilers js:mocha-traceur test/mocha"
+    "test": "eslint src/* test/mocha/* && mocha --compilers js:mocha-traceur test/mocha"
   },
   "eslintConfig": {
     "env": {
