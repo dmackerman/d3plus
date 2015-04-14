@@ -85,6 +85,7 @@
     },
     "parser": "babel-eslint",
     "rules": {
+      "no-loop-func": 0,
       "strict": 0
     }
   }
