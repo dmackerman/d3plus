@@ -78,6 +78,16 @@ module.exports = class {
 
   }
 
+  // Darkens the color if it is too light to appear on white.
+  legible() {
+    var c = this.hsl;
+    if (c.l > .45) {
+      if (c.s > .8) { c.s = 0.8; }
+      c.l = 0.45;
+    }
+    return c.toString();
+  }
+
   // Lightens the color while also reducing the saturation.
   lighter(i) {
     if (!i) { i = 0.5; }
