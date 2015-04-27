@@ -11,7 +11,7 @@ describe("Color", function(){
     describe("hex parsing", function(){
       for (let hex of ["#000000", "#cc0000", "#00ff00", "#000088"])
         it(hex, function(){
-          assert.strictEqual(hex, new Color(hex).hex);
+          assert.strictEqual(hex, new Color(hex).hex());
         });
     });
 
@@ -19,17 +19,17 @@ describe("Color", function(){
     describe("missing value parsing", function(){
       for (let hex of [null, undefined])
         it(hex, function(){
-          assert.strictEqual(settings.missing, new Color(hex).hex);
+          assert.strictEqual(settings.missing, new Color(hex).hex());
         });
     });
 
     // Tests true/false booleans.
     describe("boolean parsing", function(){
       it("true", function(){
-        assert.strictEqual(settings.on, new Color(true).hex);
+        assert.strictEqual(settings.on, new Color(true).hex());
       });
       it("false", function(){
-        assert.strictEqual(settings.off, new Color(false).hex);
+        assert.strictEqual(settings.off, new Color(false).hex());
       });
     });
 
@@ -39,7 +39,7 @@ describe("Color", function(){
           values = ["Alpha", "Beta", 45, 85];
       values.forEach(function(value, i){
         it(value, function(){
-          assert.strictEqual(scale[i], new Color(value).hex);
+          assert.strictEqual(scale[i], new Color(value).hex());
         });
       });
     });
@@ -53,7 +53,7 @@ describe("Color", function(){
         l = ["#cf1717", "#17cf17", "#1717cf"];
     d.forEach(function(hex, i){
       it(hex, function(){
-        assert.strictEqual(l[i], new Color(hex).legible().hex);
+        assert.strictEqual(l[i], new Color(hex).legible().hex());
       });
     });
 
@@ -66,7 +66,7 @@ describe("Color", function(){
         l = ["#cf5252", "#52cf52", "#5252cf"];
     d.forEach(function(hex, i){
       it(hex, function(){
-        assert.strictEqual(l[i], new Color(hex).lighter().hex);
+        assert.strictEqual(l[i], new Color(hex).lighter().hex());
       });
     });
 
@@ -80,7 +80,7 @@ describe("Color", function(){
     describe("dark colors", function(){
       for (let hex of ["#000", "#777", "#c00", "#0b0", "#00f", "#880", "#0aa", "#c0c"]) {
         it(hex, function(){
-          assert.strictEqual(settings.light, new Color(hex).text().hex);
+          assert.strictEqual(settings.light, new Color(hex).text().hex());
         });
       }
     });
@@ -89,7 +89,7 @@ describe("Color", function(){
     describe("light colors", function(){
       for (let hex of ["#fff", "#888", "#fcc", "#8c8", "#990", "#0bb", "#fcf"]) {
         it(hex, function(){
-          assert.strictEqual(settings.dark, new Color(hex).text().hex);
+          assert.strictEqual(settings.dark, new Color(hex).text().hex());
         });
       }
     });

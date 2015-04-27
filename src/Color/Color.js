@@ -16,30 +16,37 @@ var Color = class {
 
     // If the color value is null  or undefined, set to grey.
     if ([null, undefined].indexOf(color) >= 0) {
-      color = this.defaults.missing;
+      this.color = this.defaults.missing;
     }
     // Else if the color is true, set to green.
     else if (color === true) {
-      color = this.defaults.on;
+      this.color = this.defaults.on;
     }
     // Else if the color is false, set to red.
     else if (color === false) {
-      color = this.defaults.off;
+      this.color = this.defaults.off;
     }
     // Else if the color is not a valid color string, use the color scale.
     else if (!this.validate()) {
-      color = this.defaults.scale(color);
+      this.color = this.defaults.scale(color);
+    }
+    else {
+      this.color = color;
     }
 
-    this.rgb = d3.rgb(color);
-    this.hex = this.rgb.toString();
-    this.hsl = this.rgb.hsl();
+  }
 
+  hex() {
+    return this.rgb().toString();
+  }
+
+  hsl() {
+    return this.rgb().hsl();
   }
 
   // Darkens the color if it is too light to appear on white.
   legible() {
-    var c = this.hsl;
+    var c = this.hsl();
     if (c.l > .45) {
       if (c.s > .8) { c.s = 0.8; }
       c.l = 0.45;
@@ -50,16 +57,20 @@ var Color = class {
   // Lightens the color while also reducing the saturation.
   lighter(i) {
     if (!i) { i = 0.5; }
-    var c = this.hsl;
+    var c = this.hsl();
     i = (1 - c.l) * i;
     c.l += i; c.s -= i;
     return new Color(c.toString());
   }
 
+  rgb() {
+    return d3.rgb(this.color);
+  }
+
   // Analyzes the color and determines an appropriate color for text to be
   // placed on top of the color.
   text() {
-    var r = this.rgb.r, g = this.rgb.g, b = this.rgb.b,
+    var rgb = this.rgb(), r = rgb.r, g = rgb.g, b = rgb.b,
         yiq = (r * 299 + g * 587 + b * 114) / 1000,
         c = yiq >= 128 ? this.defaults.dark : this.defaults.light;
     return new Color(c);
