@@ -7,7 +7,7 @@ var d3 = require("d3"),
 * @class Color
 * @constructor
 */
-module.exports = class {
+var Color = class {
 
   constructor(color, defaults) {
 
@@ -44,7 +44,7 @@ module.exports = class {
       if (c.s > .8) { c.s = 0.8; }
       c.l = 0.45;
     }
-    return c.toString();
+    return new Color(c.toString());
   }
 
   // Lightens the color while also reducing the saturation.
@@ -53,15 +53,16 @@ module.exports = class {
     var c = this.hsl;
     i = (1 - c.l) * i;
     c.l += i; c.s -= i;
-    return c.toString();
+    return new Color(c.toString());
   }
 
   // Analyzes the color and determines an appropriate color for text to be
   // placed on top of the color.
   text() {
-    var r = this.rgb.r, g = this.rgb.g, b = this.rgb.b;
-    var yiq = (r * 299 + g * 587 + b * 114) / 1000;
-    return yiq >= 128 ? this.defaults.dark : this.defaults.light;
+    var r = this.rgb.r, g = this.rgb.g, b = this.rgb.b,
+        yiq = (r * 299 + g * 587 + b * 114) / 1000,
+        c = yiq >= 128 ? this.defaults.dark : this.defaults.light;
+    return new Color(c);
   }
 
   // Returns true if the user value is a valid color and not black.
@@ -99,3 +100,5 @@ module.exports = class {
   }
 
 };
+
+module.exports = Color;

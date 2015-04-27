@@ -53,7 +53,7 @@ describe("Color", function(){
         l = ["#cf1717", "#17cf17", "#1717cf"];
     d.forEach(function(hex, i){
       it(hex, function(){
-        assert.strictEqual(l[i], new Color(hex).legible());
+        assert.strictEqual(l[i], new Color(hex).legible().hex);
       });
     });
 
@@ -66,7 +66,7 @@ describe("Color", function(){
         l = ["#cf5252", "#52cf52", "#5252cf"];
     d.forEach(function(hex, i){
       it(hex, function(){
-        assert.strictEqual(l[i], new Color(hex).lighter());
+        assert.strictEqual(l[i], new Color(hex).lighter().hex);
       });
     });
 
@@ -80,7 +80,7 @@ describe("Color", function(){
     describe("dark colors", function(){
       for (let hex of ["#000", "#777", "#c00", "#0b0", "#00f", "#880", "#0aa", "#c0c"]) {
         it(hex, function(){
-          assert.strictEqual(settings.light, new Color(hex).text());
+          assert.strictEqual(settings.light, new Color(hex).text().hex);
         });
       }
     });
@@ -89,7 +89,7 @@ describe("Color", function(){
     describe("light colors", function(){
       for (let hex of ["#fff", "#888", "#fcc", "#8c8", "#990", "#0bb", "#fcf"]) {
         it(hex, function(){
-          assert.strictEqual(settings.dark, new Color(hex).text());
+          assert.strictEqual(settings.dark, new Color(hex).text().hex);
         });
       }
     });
