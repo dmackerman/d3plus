@@ -9,7 +9,7 @@ describe("Color", function(){
 
     // Tests normal hex parsing (pass-through).
     describe("hex parsing", function(){
-      for (let hex of ["#cc0000", "#00ff00", "#000088"])
+      for (let hex of ["#000000", "#cc0000", "#00ff00", "#000088"])
         it(hex, function(){
           assert.strictEqual(hex, new Color(hex).hex);
         });
@@ -90,6 +90,27 @@ describe("Color", function(){
       for (let hex of ["#fff", "#888", "#fcc", "#8c8", "#990", "#0bb", "#fcf"]) {
         it(hex, function(){
           assert.strictEqual(settings.dark, new Color(hex).text());
+        });
+      }
+    });
+
+  });
+
+  // Tests pertaining to the color validation function.
+  describe("validate", function(){
+
+    describe("valid colors", function(){
+      for (let color of ["#000", "#000000", "black", "#f00", "#ff0000", "rgb(255,0,0)", "red", "hsl(0, 100%, 50%)"]) {
+        it(color, function(){
+          assert.strictEqual(true, new Color(color).validate());
+        });
+      }
+    });
+
+    describe("invalid colors", function(){
+      for (let color of ["Text", 45, true, false, null, undefined]) {
+        it(color, function(){
+          assert.strictEqual(false, new Color(color).validate());
         });
       }
     });
