@@ -47,7 +47,7 @@ describe("Color", function(){
 
   // Tests pertaining to the text color function. Each color should return
   // either white or black, depending on the "darkness" of the color.
-  describe("text color", function(){
+  describe("text", function(){
 
     // Tests that specific colors are dark enough to return white.
     describe("dark colors", function(){
@@ -65,6 +65,19 @@ describe("Color", function(){
           assert.strictEqual("#444444", new Color(hex).text());
         });
       }
+    });
+
+  });
+
+  // Tests for the color lightening function.
+  describe("lighter", function(){
+
+    var d = ["#440000", "#004400", "#000044"],
+        l = ["#cf5252", "#52cf52", "#5252cf"];
+    d.forEach(function(hex, i){
+      it(hex, function(){
+        assert.strictEqual(l[i], new Color(hex).lighter());
+      });
     });
 
   });

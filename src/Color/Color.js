@@ -78,6 +78,17 @@ module.exports = class {
 
   }
 
+  // Lightens the color while also reducing the saturation.
+  lighter(i) {
+    if (!i) { i = 0.5; }
+    var c = this.hsl;
+    i = (1 - c.l) * i;
+    c.l += i; c.s -= i;
+    return c.toString();
+  }
+
+  // Analyzes the color and determines an appropriate color for text to be
+  // placed on top of the color.
   text() {
     var r = this.rgb.r, g = this.rgb.g, b = this.rgb.b;
     var yiq = (r * 299 + g * 587 + b * 114) / 1000;
