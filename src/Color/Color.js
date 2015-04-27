@@ -65,6 +65,16 @@ var Color = class {
     return new Color(c.toString());
   }
 
+  opacity() {
+    var c = this.color.replace(RegExp(" ", "g"), "").toLowerCase();
+    if (c.indexOf("hsla(") === 0 || c.indexOf("rgba(") === 0) {
+      return parseFloat(c.split(")")[0].split(",")[3], 10);
+    }
+    else {
+      return 1;
+    }
+  }
+
   // Returns the D3 rgb object.
   rgb() {
     return d3.rgb(this.color);
@@ -98,16 +108,23 @@ var Color = class {
     }
 
     var black;
-    // Checks luminosity if variable is hsl or hsla.
-    if (color.indexOf("hsl(") === 0 || color.indexOf("hsla(") === 0) {
-      black = parseFloat(color.split(",")[2], 10) === 0;
-    }
-    // Checks rgb channels if variable is rgb or rgba.
-    else if (color.indexOf("rgb(") === 0 || color.indexOf("rgba(") === 0) {
-      // Variable is black if the sum of all 3 color channels is 0.
-      black = d3.sum(color.split("(")[1].split(",").slice(0, 3).map(function(n){
+    if (color.indexOf("hsl") === 0 || color.indexOf("rgb") === 0) {
+
+      var values = color.split("(")[1].split(",").slice(0, 3).map(function(n){
         return parseFloat(n, 10);
-      })) === 0;
+      });
+
+      // Checks luminosity if variable is hsl or hsla.
+      if (color.indexOf("hsl") === 0) {
+        black = values[2] === 0;
+        color = d3.rgb("hsl("+values.join(",")+")");
+      }
+      // Variable is black if the sum of all 3 rgb color channels is 0.
+      else {
+        black = d3.sum(values) === 0;
+        color = d3.rgb("rgb("+values.join(",")+")");
+      }
+
     }
     else {
       black = ["black", "#000", "#000000"].indexOf(color) >= 0;

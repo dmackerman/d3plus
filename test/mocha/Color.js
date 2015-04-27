@@ -15,6 +15,42 @@ describe("Color", function(){
         });
     });
 
+    // Tests rgb parsing.
+    describe("rgb parsing", function(){
+
+      var d = ["rgb(255,0,0)", "rgb(0,255,0)", "rgb(0,0,255)"],
+          l = ["#ff0000", "#00ff00", "#0000ff"];
+      d.forEach(function(rgb, i){
+        it(rgb, function(){
+          assert.strictEqual(l[i], new Color(rgb).hex());
+        });
+      });
+
+    });
+
+    // Tests hsl parsing.
+    describe("hsl parsing", function(){
+
+      var d = ["hsl(0,100%,50%)", "hsl(120,100%,50%)", "hsl(240,100%,50%)"],
+          l = ["#ff0000", "#00ff00", "#0000ff"];
+      d.forEach(function(hsl, i){
+        it(hsl, function(){
+          assert.strictEqual(l[i], new Color(hsl).hex());
+        });
+      });
+
+    });
+
+    // Tests opacity parsing.
+    describe("opacity parsing", function(){
+
+      for (let color of ["rgba(255,0,0,0.5)", "hsla(0,0%,0%,0.5)"])
+        it(color, function(){
+          assert.strictEqual(0.5, new Color(color).opacity());
+        });
+
+    });
+
     // Tests for missing values.
     describe("missing value parsing", function(){
       for (let hex of [null, undefined])
