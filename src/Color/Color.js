@@ -38,7 +38,7 @@ var Color = class {
 
   // Returns the hexidecimal value.
   hex() {
-    return this.rgb().toString();
+    return this.toString();
   }
 
   // Returns the D3 hsl object.
