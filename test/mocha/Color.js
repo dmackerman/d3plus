@@ -3,6 +3,7 @@ var assert = require("assert"),
 
 describe("Color", function(){
 
+  // Tests pertaining to the construction of new Color objects.
   describe("constructor", function(){
 
     // Tests normal hex parsing (pass-through).
@@ -40,6 +41,30 @@ describe("Color", function(){
           assert.strictEqual(scale[i], new Color(value).hex);
         });
       });
+    });
+
+  });
+
+  // Tests pertaining to the text color function. Each color should return
+  // either white or black, depending on the "darkness" of the color.
+  describe("text color", function(){
+
+    // Tests that specific colors are dark enough to return white.
+    describe("dark colors", function(){
+      for (let hex of ["#000", "#777", "#c00", "#0b0", "#00f", "#880", "#0aa", "#c0c"]) {
+        it(hex, function(){
+          assert.strictEqual("#f7f7f7", new Color(hex).text());
+        });
+      }
+    });
+
+    // Tests that specific colors are light enough to return black.
+    describe("light colors", function(){
+      for (let hex of ["#fff", "#888", "#fcc", "#8c8", "#990", "#0bb", "#fcf"]) {
+        it(hex, function(){
+          assert.strictEqual("#444444", new Color(hex).text());
+        });
+      }
     });
 
   });
