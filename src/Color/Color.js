@@ -30,10 +30,25 @@ var Color = class {
     else if (!this.validate()) {
       this.color = this.defaults.scale(color);
     }
-    else {
+    else if (!this.color) {
       this.color = color;
     }
 
+  }
+
+  // Mixes a second color, returning a new Color object.
+  add(c2) {
+    if (c2.constructor !== Color) { c2 = new Color(c2); }
+    var o1 = this.opacity(), o2 = c2.opacity(), c1 = this.hsl();
+    c2 = c2.hsl();
+    var d = Math.abs(c2.h * o2 - c1.h * o1);
+    if (d > 180) { d = d - 360; }
+    var h = (d3.min([c1.h, c2.h]) + d / 2) % 360,
+        s = c1.s + (c2.s * o2 - c1.s * o1) / 2,
+        l = c1.l + (c2.l * o2 - c1.l * o1) / 2,
+        a = o1 + (o2 - o1) / 2;
+    if (h < 0) { h = 360 + h; }
+    return new Color("hsla("+[h, s * 100+"%", l * 100+"%", a].join(",")+")");
   }
 
   // Returns the hexidecimal value.
@@ -65,8 +80,11 @@ var Color = class {
     return new Color(c.toString());
   }
 
+  // Parses opacity from original rgba or hsla value.
   opacity() {
-    var c = this.color.replace(RegExp(" ", "g"), "").toLowerCase();
+    var c = this.value;
+    if (!c || c.constructor !== String) { return 1; }
+    c = c.replace(RegExp(" ", "g"), "").toLowerCase();
     if (c.indexOf("hsla(") === 0 || c.indexOf("rgba(") === 0) {
       return parseFloat(c.split(")")[0].split(",")[3], 10);
     }
@@ -78,6 +96,21 @@ var Color = class {
   // Returns the D3 rgb object.
   rgb() {
     return d3.rgb(this.color);
+  }
+
+  // Subtracts a second color, returning a new Color object.
+  subtract(c2) {
+    if (c2.constructor !== Color) { c2 = new Color(c2); }
+    var o1 = this.opacity(), o2 = c2.opacity(), c1 = this.hsl();
+    c2 = c2.hsl();
+    var d = (c2.h * o2 - c1.h * o1);
+    if (Math.abs(d) > 180) { d = d - 360; }
+    var h = (c1.h - d) % 360,
+        s = c1.s - (c2.s * o2 - c1.s * o1) / 2,
+        l = c1.l - (c2.l * o2 - c1.l * o1) / 2,
+        a = o1 - (o2 - o1) / 2;
+    if (h < 0) { h = 360 + h; }
+    return new Color("hsla("+[h, s * 100+"%", l * 100+"%", a].join(",")+")");
   }
 
   // Analyzes the color and determines an appropriate color for text to be
@@ -117,12 +150,14 @@ var Color = class {
       // Checks luminosity if variable is hsl or hsla.
       if (color.indexOf("hsl") === 0) {
         black = values[2] === 0;
-        color = d3.rgb("hsl("+values.join(",")+")");
+        color = "hsl("+values.join(",")+")";
+        this.color = color;
       }
       // Variable is black if the sum of all 3 rgb color channels is 0.
       else {
         black = d3.sum(values) === 0;
-        color = d3.rgb("rgb("+values.join(",")+")");
+        color = "rgb("+values.join(",")+")";
+        this.color = color;
       }
 
     }

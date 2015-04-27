@@ -153,4 +153,32 @@ describe("Color", function(){
 
   });
 
+  // Tests for the color add function.
+  describe("addition", function(){
+
+    var c1 = ["#ff0000", "#ffff00", "#0000ff", "#ffff00", "#0000ff", "#ff0000"],
+        c2 = ["#ffff00", "#0000ff", "#ff0000", "#ff0000", "#ffff00", "#0000ff"],
+        rs = ["#ff8000", "#00ff80", "#ff00ff", "#ff8000", "#00ff80", "#ff00ff"];
+    c1.forEach(function(c, i){
+      it(c + " + " + c2[i], function(){
+        assert.strictEqual(rs[i], new Color(c).add(c2[i]).hex());
+      });
+    });
+
+  });
+
+  // Tests for the color substract function.
+  describe("subtraction", function(){
+
+    var c1 = ["#ff8000", "#00ff80", "#ff00ff", "#ff8000", "#00ff80", "#ff00ff"],
+        c2 = ["#ff0000", "#ffff00", "#0000ff", "#ffff00", "#0000ff", "#ff0000"],
+        rs = ["#feff00", "#0100ff", "#ff0000", "#ff0100", "#feff00", "#0000ff"];
+    c1.forEach(function(c, i){
+      it(c + " - " + c2[i], function(){
+        assert.strictEqual(rs[i], new Color(c).subtract(c2[i]).hex());
+      });
+    });
+
+  });
+
 });
