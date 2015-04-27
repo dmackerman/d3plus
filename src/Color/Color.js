@@ -36,10 +36,12 @@ var Color = class {
 
   }
 
+  // Returns the hexidecimal value.
   hex() {
     return this.rgb().toString();
   }
 
+  // Returns the D3 hsl object.
   hsl() {
     return this.rgb().hsl();
   }
@@ -63,6 +65,7 @@ var Color = class {
     return new Color(c.toString());
   }
 
+  // Returns the D3 rgb object.
   rgb() {
     return d3.rgb(this.color);
   }
@@ -74,6 +77,11 @@ var Color = class {
         yiq = (r * 299 + g * 587 + b * 114) / 1000,
         c = yiq >= 128 ? this.defaults.dark : this.defaults.light;
     return new Color(c);
+  }
+
+  // Pass-through method for D3 toString function.
+  toString() {
+    return this.rgb().toString();
   }
 
   // Returns true if the user value is a valid color and not black.
