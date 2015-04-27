@@ -2,9 +2,9 @@ var d3 = require("d3");
 
 // Initializes the default d3plus color scale.
 var scale = d3.scale.ordinal().range([
-  "#b22200", "#EACE3F", "#282F6B", "#B35C1E", "#224F20", "#5F487C",
+  "#b22200", "#eace3f", "#282f6b", "#b35c1e", "#224f20", "#5f487c",
 
-  "#759143", "#419391", "#993F88", "#e89c89", "#ffee8d", "#afd5e8",
+  "#759143", "#419391", "#993c88", "#e89c89", "#ffee8d", "#afd5e8",
 
   "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"
 ]);
@@ -55,7 +55,7 @@ module.exports = class {
     }
     // Else if the color is true, set to green.
     else if (color === true) {
-      color = "#224F20";
+      color = "#224f20";
     }
     // Else if the color is false, set to red.
     else if (color === false) {
