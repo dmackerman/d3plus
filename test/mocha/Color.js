@@ -1,5 +1,6 @@
 var assert = require("assert"),
-    Color = require("../../src/Color/Color.js");
+    Color = require("../../src/Color/Color.js"),
+    settings = require("../../src/settings/color.js");
 
 describe("Color", function(){
 
@@ -18,23 +19,23 @@ describe("Color", function(){
     describe("missing value parsing", function(){
       for (let hex of [null, undefined])
         it(hex, function(){
-          assert.strictEqual("#cccccc", new Color(hex).hex);
+          assert.strictEqual(settings.missing, new Color(hex).hex);
         });
     });
 
     // Tests true/false booleans.
     describe("boolean parsing", function(){
       it("true", function(){
-        assert.strictEqual("#224f20", new Color(true).hex);
+        assert.strictEqual(settings.on, new Color(true).hex);
       });
       it("false", function(){
-        assert.strictEqual("#b22200", new Color(false).hex);
+        assert.strictEqual(settings.off, new Color(false).hex);
       });
     });
 
     // Tests mapping strings and numbers to the default color scale.
     describe("mapping to color scale", function(){
-      var scale = ["#b22200", "#eace3f", "#282f6b", "#b35c1e"],
+      var scale = settings.scale.range(),
           values = ["Alpha", "Beta", 45, 85];
       values.forEach(function(value, i){
         it(value, function(){
@@ -79,7 +80,7 @@ describe("Color", function(){
     describe("dark colors", function(){
       for (let hex of ["#000", "#777", "#c00", "#0b0", "#00f", "#880", "#0aa", "#c0c"]) {
         it(hex, function(){
-          assert.strictEqual("#f7f7f7", new Color(hex).text());
+          assert.strictEqual(settings.light, new Color(hex).text());
         });
       }
     });
@@ -88,7 +89,7 @@ describe("Color", function(){
     describe("light colors", function(){
       for (let hex of ["#fff", "#888", "#fcc", "#8c8", "#990", "#0bb", "#fcf"]) {
         it(hex, function(){
-          assert.strictEqual("#444444", new Color(hex).text());
+          assert.strictEqual(settings.dark, new Color(hex).text());
         });
       }
     });

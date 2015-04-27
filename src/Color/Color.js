@@ -1,13 +1,5 @@
-var d3 = require("d3");
-
-// Initializes the default d3plus color scale.
-var scale = d3.scale.ordinal().range([
-  "#b22200", "#eace3f", "#282f6b", "#b35c1e", "#224f20", "#5f487c",
-
-  "#759143", "#419391", "#993c88", "#e89c89", "#ffee8d", "#afd5e8",
-
-  "#f7ba77", "#a5c697", "#c5b5e5", "#d1d392", "#bbefd0", "#e099cf"
-]);
+var d3 = require("d3"),
+    settings = require("../settings/color.js");
 
 var notBlack = function(color) {
 
@@ -45,21 +37,22 @@ var notBlack = function(color) {
 */
 module.exports = class {
 
-  constructor(color) {
+  constructor(color, defaults) {
 
     this.value = color;
+    this.defaults = defaults || settings;
 
     // If the color value is null  or undefined, set to grey.
     if ([null, undefined].indexOf(color) >= 0) {
-      color = "#ccc";
+      color = this.defaults.missing;
     }
     // Else if the color is true, set to green.
     else if (color === true) {
-      color = "#224f20";
+      color = this.defaults.on;
     }
     // Else if the color is false, set to red.
     else if (color === false) {
-      color = "#b22200";
+      color = this.defaults.off;
     }
 
     // Tries to parse the color through the d3.rgb function.
@@ -70,7 +63,7 @@ module.exports = class {
     // did not pass black as a value (determined by the "notBlack" function),
     // the color value is determined from the default color scale.
     if (this.rgb.toString() === "#000000" && notBlack(color)) {
-      this.rgb = d3.rgb(scale(color));
+      this.rgb = d3.rgb(this.defaults.scale(color));
     }
 
     this.hex = this.rgb.toString();
@@ -102,7 +95,7 @@ module.exports = class {
   text() {
     var r = this.rgb.r, g = this.rgb.g, b = this.rgb.b;
     var yiq = (r * 299 + g * 587 + b * 114) / 1000;
-    return yiq >= 128 ? "#444444" : "#f7f7f7";
+    return yiq >= 128 ? this.defaults.dark : this.defaults.light;
   }
 
 };
